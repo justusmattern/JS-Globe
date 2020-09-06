@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Globe</title>
+    <script src="/javascripts/p5.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    </head>
+    <body>
+        <script>
+            let earthTexture;
+            let backgroundImg;
+            let horAngle = 0;
+            let verAngle = 0;
+            let initX;
+            let initY;
+            let r;
+
+
+function setup(){
+
+    r = (window.innerHeight/2)/tan(PI/6);
+    backgroundImg = loadImage('/images/2k_stars.jpg');
+    earthTexture = loadImage('/images/earth.jpg');
+    createCanvas(window.innerWidth, window.innerHeight, WEBGL);
+    //fill('red');
+    
+    
+}
+
+function draw(){
+    camera(r*sin(horAngle)*sin(verAngle), r*sin(verAngle), r, 0,0,0,0,1,0);
+    texture(backgroundImg);
+    box(window.innerWidth+200,window.innerHeight+200,1);
+    fill(50);
+    noStroke();
+    texture(earthTexture);
+    sphere(400);    
+}
+
+function mouseCicked(){
+    initX = mouseX;
+    initY = mouseY;
+}
+
+function mousePressed(){
+    difX = initX - mouseX;
+    difY = initY - mouseY;
+
+    horAngle -= difX;
+    verAngle += difY;
+    
+}
+        </script>
+    </body>
+</html>
