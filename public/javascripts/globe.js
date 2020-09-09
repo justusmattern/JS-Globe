@@ -19,7 +19,8 @@ function setup(){
     r = 2*(window.innerHeight/2)/tan(PI/6);
     backgroundImg = loadImage('/images/2k_stars.jpg');
     earthTexture = loadImage('/images/8k_earth.jpg');
-    createCanvas(window.innerWidth, window.innerHeight, WEBGL);
+    cnv = createCanvas(window.innerWidth, window.innerHeight, WEBGL);
+    cnv.parent('wrapper');
     
 }
 
