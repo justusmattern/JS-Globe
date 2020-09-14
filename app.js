@@ -1,5 +1,12 @@
-var createError = require('http-errors');
+// ---------- MONGODB CONNECTION ---------- //
 var express = require('express');
+var app = express();
+var mongoUtil = require('./database');
+
+mongoUtil.connectToServer( function( err, client ) {
+  if (err) console.log(err);
+  
+var createError = require('http-errors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -7,8 +14,6 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var issRouter = require('./routes/iss');
-
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,5 +44,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+} );
+
 
 module.exports = app;

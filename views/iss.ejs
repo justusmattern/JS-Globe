@@ -26,7 +26,7 @@
             httpRequest = new XMLHttpRequest();
 
             if (!httpRequest) {
-                alert('Giving up :( Cannot create an XMLHTTP instance');
+                alert('Failed to create HTTPRequest instance');
             }
             httpRequest.onreadystatechange = assignVars;
             httpRequest.open('GET', 'http://api.open-notify.org/iss-now.json');
@@ -45,7 +45,7 @@
                     }
                 }
             }
-        }, 3000);
+        }, 10000);
 
         
          </script>
@@ -93,6 +93,8 @@ function setup(){
     cnv = createCanvas(width, height, WEBGL);
     cnv.parent('wrapper');
     sunAngle = 2*PI*hours/24;
+    console.log(hours);
+    console.log(sunAngle);
     
 }
 
@@ -106,10 +108,10 @@ function draw(){
     camera(r*sin(horAngle)*cos(verAngle), r*sin(verAngle), r*cos(horAngle)*cos(verAngle), 0,0,0,0,1,0);
     texture(backgroundImg);
     box(width*5,height*5,10000);
-    pointLight(200,200,200, sunDist*sin(sunAngle),sunDist*1/215,-sunDist*cos(sunAngle)); //placing 4 lights at the outer points of the sun - the sun's radius is 1/215 of its distance to earth
-    pointLight(200,200,200, sunDist*sin(sunAngle),-sunDist*1/215,-sunDist*cos(sunAngle));
-    pointLight(200,200,200, sunDist*sin(sunAngle),0,-sunDist*cos(sunAngle)+sunDist*1/215);
-    pointLight(200,200,200, sunDist*sin(sunAngle),0,-sunDist*cos(sunAngle)-sunDist*1/215);
+    pointLight(120,120,120, -sunDist*sin(sunAngle),sunDist*1/215,sunDist*cos(sunAngle)); //placing 4 lights at the outer points of the sun - the sun's radius is 1/215 of its distance to earth
+    pointLight(120,120,120, -sunDist*sin(sunAngle),-sunDist*1/215,sunDist*cos(sunAngle));
+    pointLight(120,120,120, -sunDist*sin(sunAngle),0,sunDist*cos(sunAngle)+sunDist*1/215);
+    pointLight(120,120,120, -sunDist*sin(sunAngle),0,sunDist*cos(sunAngle)-sunDist*1/215);
 
     ambientLight(50);
     fill(50);
