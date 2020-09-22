@@ -2,21 +2,22 @@
 <html>
     <head>
     <title>Globe</title>
-    <script src="/javascripts/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.sound.min.js"></script>
     <script src="/javascripts/jquery-3.5.1.min.js"></script>
-    <script src="/javascripts/addScreenPositionFunction.js"></script>
-    <script src="/javascripts/screenPosTest.js"></script>
+    <script src="/javascripts/mPicker.js"></script>
     <link rel="stylesheet" href="/stylesheets/style.css">
     </head>
     <body>
-        <div style="float: left;" id="wrapper"></div>
+        <div id="wrapper"></div>
         <button id="buttonRight">Right</button>
         <button id="buttonLeft">Left</button>
         <button id="buttonUp">Up</button>
         <button id="buttonDown">Down</button>
         <button id="buttonZoomIn">Zoom in</button>
         <button id="buttonZoomOut">Zoom out</button>
-        <button id="buttonGlobe" style="position: absolute; left: 1543.8281300715637;">Globe</button>
+        <button id="buttonGlobe">Globe</button>
         <script>
             
             let log;
@@ -55,7 +56,6 @@
 
 
         <script>
-        
             let earthTexture;
             let backgroundImg;
             let horAngle;
@@ -67,19 +67,19 @@
             let difY;
             let zoomIn = false;
             let zoomOut = false;
-            let height = window.innerHeight;
-            let width = innerWidth;
+            let height = 0.9*window.innerHeight;
+            let width = 0.9*innerWidth;
+            console.log(height);
+            console.log(width);
             let sunDist = 80000;
             let sunAngle;
             let hours;
-            let x;
-            let y;
-            let z;
-            let hover;
             const earthRadius = height*0.32*2;
 
 
 function setup(){
+
+    
 
     let refTime = new Date().toLocaleString("en-US", {timeZone: "Pacific/Auckland"}).toString();
 
@@ -94,14 +94,11 @@ function setup(){
 
     verAngle = 0;
     horAngle =0;
+    console.log(tan(PI/6));
     r = 2*(height/2)/tan(PI/6);
-    backgroundImg = loadImage('/images/2k_stars.jpg');
-    earthTexture = loadImage('/images/8k_earth.jpg');
+    console.log(r);
     cnv = createCanvas(width, height, WEBGL);
-    cnv.mouseWheel(zoom);
-    addScreenPositionFunction();
     cnv.parent('wrapper');
-    sunAngle = 2*PI*hours/24;
     
 }
 
@@ -112,49 +109,10 @@ function draw(){
     if(zoomOut == true && r < height*3){
         r += 2;
     }
-    //camera(r*sin(horAngle)*cos(verAngle), r*sin(verAngle), r*cos(horAngle)*cos(verAngle), 0,0,0,0,1,0);
-    texture(backgroundImg);
-    box(10000,10000,10000);
-    pointLight(120,120,120, -sunDist*sin(sunAngle),sunDist*1/215,sunDist*cos(sunAngle)); //placing 4 lights at the outer points of the sun - the sun's radius is 1/215 of its distance to earth
-    pointLight(120,120,120, -sunDist*sin(sunAngle),-sunDist*1/215,sunDist*cos(sunAngle));
-    pointLight(120,120,120, -sunDist*sin(sunAngle),0,sunDist*cos(sunAngle)+sunDist*1/215);
-    pointLight(120,120,120, -sunDist*sin(sunAngle),0,sunDist*cos(sunAngle)-sunDist*1/215);
-
-    ambientLight(50);
-    fill(50);
-    noStroke();
-    texture(earthTexture);
-    sphere(earthRadius);
-
-    alt = earthRadius * (1 + 408/6371);
-
-    
-    x = alt*sin(log)*cos(lat);
-    y = -alt*sin(lat);
-    z = alt*cos(log)*cos(lat);
-
-    issVec = screenPosition(x,y,z);
-    if((issVec.x+width*0.5)-5 < mouseX && mouseX < (issVec.x+width*0.5)+5){
-        if((issVec.y+height*0.5)-5 < mouseY && mouseY < (issVec.y+height*0.5)+5){
-            fill('rgb(204, 0, 204)');
-            hover = true;
-
-        }else{
-            hover = false;
-            fill('red');
-        }
-    }else{
-        hover = false;
-        fill('red');
-    }
-    
-    push();
-    translate(x,y,z);
-    iss = sphere(10);
-    pop();
-
-
-    orbitControl();
+    background('grey');
+    camera(r*sin(horAngle)*cos(verAngle), r*sin(verAngle), r*cos(horAngle)*cos(verAngle), 0,0,0,0,1,0);
+    fill('black');
+    box(4320, 2107, 1);
     
 }
 
@@ -206,38 +164,6 @@ function rotateUp(){
 function rotateDown(){
     if(verAngle < 0.5*PI - 0.0021)
     verAngle += 0.003;
-}
-
-
-function showISS(){
-    x = alt*sin(log)*cos(lat);
-    y = -alt*sin(lat);
-    z = alt*cos(log)*cos(lat);
-
-    translate(x,y,z);
-    iss = sphere(10);
-}
-
-function checkTime(i) {
-        return (i < 10) ? "0" + i : i;
-    }
-
-
-function zoom(event) {
-// zoom according to direction of mouseWheelDeltaY rather than value
-let sensitivityZoom = 0.05;
-let scaleFactor = cnv.height;
-if (event.deltaY > 0) {
-cnv._curCamera._orbit(0, 0, sensitivityZoom * scaleFactor);
-} else {
-cnv._curCamera._orbit(0, 0, -sensitivityZoom * scaleFactor);
-}
-}
-
-function mouseClicked(){
-    if(hover == true){
-        window.location.replace("http://127.0.0.1:3000/iss/iss");
-    }
 }
 
 

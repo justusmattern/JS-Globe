@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var request = require('request');
 var client = require('../database');
 const assert = require('assert');
 var mongoUtil = require( '../database' );
